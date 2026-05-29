@@ -10,7 +10,7 @@ Source target: Lan, FOML, Section 4.1, Eq. (4.1.6), Theorem 4.1.
 
 $$
 \begin{aligned}
-f^* &= \min_{x\in X} f(x),\\
+f^{*} &= \min_{x\in X} f(x),\\
 f(x) &= \mathbb{E}[F(x,\xi)] .
 \end{aligned}
 $$
@@ -36,9 +36,9 @@ Lean:
 $$
 x_{t+1}
 =\arg\min_{x\in X}
-\left\{
+\{
 \gamma_t\langle G(x_t,\xi_t),x\rangle+V(x_t,x)
-\right\}.
+\}.
 $$
 
 Lean:
@@ -50,8 +50,8 @@ Lean:
 ### Output and Bound
 
 $$
-\bar{x}_s^k =
-\left(\sum_{t=s}^{k}\gamma_t\right)^{-1}
+\bar{x}_s^{k} =
+(\sum_{t=s}^{k}\gamma_t)^{-1}
 \sum_{t=s}^{k}\gamma_t x_t .
 $$
 
@@ -64,20 +64,20 @@ Theorem 4.1:
 
 $$
 \begin{aligned}
-\mathbb{E}[f(\bar{x}_s^k)]-f^*
+\mathbb{E}[f(\bar{x}_s^{k})]-f^{*}
 &\le
-\left(\sum_{t=s}^{k}\gamma_t\right)^{-1}
-\left[
-\mathbb{E}[V(x_s,x^*)]
-+(M^2+\sigma^2)\sum_{t=s}^{k}\gamma_t^2
-\right].
+(\sum_{t=s}^{k}\gamma_t)^{-1}
+[
+\mathbb{E}[V(x_s,x^{*})]
++(M^{2}+\sigma^{2})\sum_{t=s}^{k}\gamma_t^{2}
+].
 \end{aligned}
 $$
 
 Lean:
 - `lemma_3_4` is the mirror three-point descent lemma used in the update analysis.
 - `stochasticMirrorDescent_oneStep_pathwise` proves the one-step pathwise bound.
-- `stochasticMirrorDescent_martingale_term_integral_zero` formalizes the cancellation of $\mathbb{E}[\langle\delta_t,x_t-x^*\rangle]$.
+- `stochasticMirrorDescent_martingale_term_integral_zero` formalizes the cancellation of $\mathbb{E}[\langle\delta_t,x_t-x^{*}\rangle]$.
 - `summed_one_step_gap_bound` and `window_variance_sum_expectation_bound` assemble the telescope and variance terms.
 - `stochasticMirrorDescent_convergence` is the final theorem.
 
@@ -133,7 +133,7 @@ $$
 x_{t+1}
 =
 \arg\min_{x\in X}
-\left\{\gamma\,[\langle G_t,x\rangle+h(x)]+V(x_t,x)\right\}.
+\{\gamma\,[\langle G_t,x\rangle+h(x)]+V(x_t,x)\}.
 $$
 
 Lean:
@@ -144,7 +144,7 @@ Lean:
 
 $$
 \begin{aligned}
-x^s &= x_{T_s+1},\\
+x^{s} &= x_{T_s+1},\\
 \tilde{x}^{s}
 &=
 \frac{\sum_{t=2}^{T_s}\theta_t x_t}{\sum_{t=2}^{T_s}\theta_t}.
@@ -175,13 +175,13 @@ Corollary 5.8 states
 
 $$
 \begin{aligned}
-\mathbb{E}[\Psi(\bar{x}^{S})-\Psi(x^*)]
+\mathbb{E}[\Psi(\bar{x}^{S})-\Psi(x^{*})]
 &\le
-\frac{8}{2^S-1}
-\left[
-\frac{11}{4}\bigl(\Psi(x^0)-\Psi(x^*)\bigr)
-+16L_QV(x^0,x^*)
-\right].
+\frac{8}{2^{S}-1}
+[
+\frac{11}{4}(\Psi(x^{0})-\Psi(x^{*}))
++16L_QV(x^{0},x^{*})
+].
 \end{aligned}
 $$
 
@@ -203,7 +203,7 @@ Namespace: `SGD.NonconvexStochasticMirrorDescent`.
 
 $$
 \begin{aligned}
-\Psi^* &= \min_{x\in X}\Psi(x),\\
+\Psi^{*} &= \min_{x\in X}\Psi(x),\\
 \Psi(x)&=f(x)+h(x).
 \end{aligned}
 $$
@@ -219,20 +219,20 @@ The prox point and projected-gradient mapping are
 
 $$
 \begin{aligned}
-x^+
+x^{+}
 &=
 \arg\min_{u\in X}
-\left\{
+\{
 \langle g,u\rangle+\gamma^{-1}V(x,u)+h(u)
-\right\},\\
-P_X(x,g,\gamma)&=\gamma^{-1}(x-x^+).
+\},\\
+P_X(x,g,\gamma)&=\gamma^{-1}(x-x^{+}).
 \end{aligned}
 $$
 
 Lean:
 - `paperProxObjective` is the displayed prox objective.
 - `PaperProxSelector` stores the source argmin selector.
-- `proxPoint`, `proxObjective`, and `projectedGradient` implement $x^+$ and $P_X$.
+- `proxPoint`, `proxObjective`, and `projectedGradient` implement $x^{+}$ and $P_X$.
 - `proposition_6_1_projectedGradient_lipschitz` is the projected-gradient stability theorem used in validation.
 
 ### RSMD Runs and Stopping Law
@@ -253,9 +253,9 @@ $$
 x_{k+1}
 =
 \arg\min_{u\in X}
-\left\{
+\{
 \langle G_k,u\rangle+\gamma_k^{-1}V(x_k,u)+h(u)
-\right\}.
+\}.
 $$
 
 Lean:
@@ -269,8 +269,8 @@ $$
 \begin{aligned}
 \mathbb{P}\{R=k\}
 &=
-\frac{\gamma_k-L\gamma_k^2}
-{\sum_{j=1}^{N}(\gamma_j-L\gamma_j^2)} .
+\frac{\gamma_k-L\gamma_k^{2}}
+{\sum_{j=1}^{N}(\gamma_j-L\gamma_j^{2})} .
 \end{aligned}
 $$
 
@@ -295,7 +295,7 @@ $$
 The final candidate satisfies
 
 $$
-\|\bar{g}_X(\bar{x}^*)\|
+\|\bar{g}_X(\bar{x}^{*})\|
 =
 \min_{1\le s\le S}\|\bar{g}_X(\bar{x}_s)\|.
 $$
@@ -310,11 +310,11 @@ Theorem 6.7(a):
 $$
 \begin{aligned}
 \mathbb{P}
-\left\{
-\|g_X(\bar{x}^*)\|^2
+\{
+\|g_X(\bar{x}^{*})\|^{2}
 \ge
-2\left(4L\mathcal{B}_{\bar{N}}+\frac{3\lambda\sigma^2}{T}\right)
-\right\}
+2(4L\mathcal{B}_{\bar{N}}+\frac{3\lambda\sigma^{2}}{T})
+\}
 &\le
 \frac{S}{\lambda}+2^{-S}.
 \end{aligned}
@@ -335,7 +335,7 @@ Source target: Lan, FOML, Section 4.6, Algorithm 4.5, Theorem 4.12.
 
 $$
 \begin{aligned}
-f^* &= \min_{x\in X}f(x),\\
+f^{*} &= \min_{x\in X}f(x),\\
 f(x)&=\mathbb{E}[F(x,\xi)] .
 \end{aligned}
 $$
@@ -352,7 +352,7 @@ Lean:
 - `StochasticBlockMirrorDescentSetup` stores the source data.
 - `StateSpace` is the dependent product $\prod_i\mathbb{R}^{n_i}$, implemented as `PiLp 2`.
 - `X` is the product feasible set $\{x:\forall i,\ x_i\in X_i\}$.
-- `blockCoord` implements $U_i^Tx=x^{(i)}$.
+- `blockCoord` implements $U_i^{T}x=x^{(i)}$.
 
 ### Oracle, Norms, and Bregman Blocks
 
@@ -361,12 +361,12 @@ The oracle assumptions are
 $$
 \begin{aligned}
 \mathbb{E}[G(x,\xi)]&=g(x)\in\partial f(x),\\
-G_i(x,\xi)&=U_i^TG(x,\xi).
+G_i(x,\xi)&=U_i^{T}G(x,\xi).
 \end{aligned}
 $$
 
 $$
-\mathbb{E}\left[\|G_i(x,\xi)\|_{i,*}^{2}\right]\le M_i^2 .
+\mathbb{E}[\|G_i(x,\xi)\|_{i,*}^{2}]\le M_i^{2}.
 $$
 
 Lean:
@@ -412,10 +412,10 @@ x_{k+1}^{(i)}
 =
 \begin{cases}
 \arg\min_{u\in X_i}
-\left\{
+\{
 \langle G_i(x_k,\xi_k),u\rangle
 +\gamma_k^{-1}V_i(x_k^{(i)},u)
-\right\},
+\},
 & i=i_k,\\
 x_k^{(i)}, & i\ne i_k .
 \end{cases}
@@ -434,7 +434,7 @@ The output uses $\theta_k=\gamma_k$:
 $$
 \bar{x}_N
 =
-\left(\sum_{k=1}^{N}\theta_k\right)^{-1}
+(\sum_{k=1}^{N}\theta_k)^{-1}
 \sum_{k=1}^{N}\theta_k x_k .
 $$
 
@@ -460,14 +460,14 @@ Theorem 4.12:
 
 $$
 \begin{aligned}
-\mathbb{E}[f(\bar{x}_N)-f(x_*)]
+\mathbb{E}[f(\bar{x}_N)-f(x_{*})]
 &\le
-\left(\sum_{k=1}^{N}\gamma_k\right)^{-1}
-\left[
-\sum_{i=1}^{b}p_i^{-1}V_i(x_1^{(i)},x_*^{(i)})
-+\frac{1}{2}\sum_{k=1}^{N}\gamma_k^2
-\sum_{i=1}^{b}M_i^2
-\right].
+(\sum_{k=1}^{N}\gamma_k)^{-1}
+[
+\sum_{i=1}^{b}p_i^{-1}V_i(x_1^{(i)},x_{*}^{(i)})
++\frac{1}{2}\sum_{k=1}^{N}\gamma_k^{2}
+\sum_{i=1}^{b}M_i^{2}
+].
 \end{aligned}
 $$
 
