@@ -9,9 +9,10 @@ Source target: Lan, FOML, Section 4.1, Eq. (4.1.6), Theorem 4.1.
 ### Problem and Geometry
 
 $$
-f^*=\min_{x\in X} f(x),
-\qquad
-f(x)=\mathbb{E}[F(x,\xi)] .
+\begin{aligned}
+f^* &= \min_{x\in X} f(x),\\
+f(x) &= \mathbb{E}[F(x,\xi)] .
+\end{aligned}
 $$
 
 Lean:
@@ -34,8 +35,10 @@ Lean:
 
 $$
 x_{t+1}
-=\operatorname*{argmin}_{x\in X}
-\left\{\gamma_t\langle G(x_t,\xi_t),x\rangle+V(x_t,x)\right\}.
+=\arg\min_{x\in X}
+\left\{
+\gamma_t\langle G(x_t,\xi_t),x\rangle+V(x_t,x)
+\right\}.
 $$
 
 Lean:
@@ -47,8 +50,7 @@ Lean:
 ### Output and Bound
 
 $$
-\bar{x}_s^k
-=
+\bar{x}_s^k =
 \left(\sum_{t=s}^{k}\gamma_t\right)^{-1}
 \sum_{t=s}^{k}\gamma_t x_t .
 $$
@@ -61,13 +63,15 @@ Lean:
 Theorem 4.1:
 
 $$
+\begin{aligned}
 \mathbb{E}[f(\bar{x}_s^k)]-f^*
-\le
+&\le
 \left(\sum_{t=s}^{k}\gamma_t\right)^{-1}
 \left[
 \mathbb{E}[V(x_s,x^*)]
 +(M^2+\sigma^2)\sum_{t=s}^{k}\gamma_t^2
 \right].
+\end{aligned}
 $$
 
 Lean:
@@ -86,11 +90,11 @@ Source target: Lan, FOML, Section 5.3, Algorithm 5.6, Corollary 5.8.
 ### Composite Finite-Sum Model
 
 $$
-\min_{x\in X}\Psi(x),
-\qquad
-\Psi(x)=f(x)+h(x),
-\qquad
-f(x)=\frac{1}{m}\sum_{i=1}^{m} f_i(x).
+\begin{aligned}
+\min_{x\in X}\Psi(x),\qquad
+\Psi(x)&=f(x)+h(x),\\
+f(x)&=\frac{1}{m}\sum_{i=1}^{m} f_i(x).
+\end{aligned}
 $$
 
 Lean:
@@ -111,10 +115,11 @@ Lean:
 ### Estimator and Prox Step
 
 $$
-G_t
-=
+\begin{aligned}
+G_t &=
 \frac{\nabla f_{i_t}(x_t)-\nabla f_{i_t}(\tilde{x})}{q_{i_t}m}
 +\nabla f(\tilde{x}).
+\end{aligned}
 $$
 
 Lean:
@@ -127,7 +132,7 @@ The prox update is
 $$
 x_{t+1}
 =
-\operatorname*{argmin}_{x\in X}
+\arg\min_{x\in X}
 \left\{\gamma\,[\langle G_t,x\rangle+h(x)]+V(x_t,x)\right\}.
 $$
 
@@ -138,11 +143,12 @@ Lean:
 ### Epochs, Output, and Corollary 5.8
 
 $$
-x^s=x_{T_s+1},
-\qquad
+\begin{aligned}
+x^s &= x_{T_s+1},\\
 \tilde{x}^{s}
-=
+&=
 \frac{\sum_{t=2}^{T_s}\theta_t x_t}{\sum_{t=2}^{T_s}\theta_t}.
+\end{aligned}
 $$
 
 $$
@@ -159,20 +165,24 @@ Lean:
 With
 
 $$
-\theta=1,\qquad \gamma=\frac{1}{16L_Q},\qquad
-T_1=7,\qquad T_s=2T_{s-1},
+\theta=1,\qquad
+\gamma=\frac{1}{16L_Q},\qquad
+T_1=7,\qquad
+T_s=2T_{s-1}.
 $$
 
 Corollary 5.8 states
 
 $$
+\begin{aligned}
 \mathbb{E}[\Psi(\bar{x}^{S})-\Psi(x^*)]
-\le
+&\le
 \frac{8}{2^S-1}
 \left[
 \frac{11}{4}\bigl(\Psi(x^0)-\Psi(x^*)\bigr)
 +16L_QV(x^0,x^*)
 \right].
+\end{aligned}
 $$
 
 Lean:
@@ -192,9 +202,10 @@ Namespace: `SGD.NonconvexStochasticMirrorDescent`.
 ### Problem and Prox Mapping
 
 $$
-\Psi^*=\min_{x\in X}\Psi(x),
-\qquad
-\Psi(x)=f(x)+h(x),
+\begin{aligned}
+\Psi^* &= \min_{x\in X}\Psi(x),\\
+\Psi(x)&=f(x)+h(x).
+\end{aligned}
 $$
 
 where $f$ is $L$-smooth and may be nonconvex, while $h$ is simple convex.
@@ -207,14 +218,15 @@ Lean:
 The prox point and projected-gradient mapping are
 
 $$
+\begin{aligned}
 x^+
-=
-\operatorname*{argmin}_{u\in X}
+&=
+\arg\min_{u\in X}
 \left\{
 \langle g,u\rangle+\gamma^{-1}V(x,u)+h(u)
-\right\},
-\qquad
-P_X(x,g,\gamma)=\gamma^{-1}(x-x^+).
+\right\},\\
+P_X(x,g,\gamma)&=\gamma^{-1}(x-x^+).
+\end{aligned}
 $$
 
 Lean:
@@ -228,9 +240,11 @@ Lean:
 The mini-batch oracle is
 
 $$
+\begin{aligned}
 G_k
-=
-\frac{1}{m_k}\sum_{i=1}^{m_k}G(x_k,\xi_{k,i}),
+&=
+\frac{1}{m_k}\sum_{i=1}^{m_k}G(x_k,\xi_{k,i})
+\end{aligned}
 $$
 
 and the RSMD step is
@@ -238,7 +252,7 @@ and the RSMD step is
 $$
 x_{k+1}
 =
-\operatorname*{argmin}_{u\in X}
+\arg\min_{u\in X}
 \left\{
 \langle G_k,u\rangle+\gamma_k^{-1}V(x_k,u)+h(u)
 \right\}.
@@ -252,10 +266,12 @@ Lean:
 The randomized stopping law is
 
 $$
+\begin{aligned}
 \mathbb{P}\{R=k\}
-=
+&=
 \frac{\gamma_k-L\gamma_k^2}
 {\sum_{j=1}^{N}(\gamma_j-L\gamma_j^2)} .
+\end{aligned}
 $$
 
 Lean:
@@ -268,11 +284,12 @@ Lean:
 Validation uses
 
 $$
-\bar{G}_T(x)=\frac{1}{T}\sum_{k=1}^{T}G(x,\xi_k),
-\qquad
+\begin{aligned}
+\bar{G}_T(x)&=\frac{1}{T}\sum_{k=1}^{T}G(x,\xi_k),\\
 \bar{g}_X(\bar{x}_s)
-=
+&=
 P_X(\bar{x}_s,\bar{G}_T(\bar{x}_s),\gamma_{R_s}).
+\end{aligned}
 $$
 
 The final candidate satisfies
@@ -291,14 +308,16 @@ Lean:
 Theorem 6.7(a):
 
 $$
+\begin{aligned}
 \mathbb{P}
 \left\{
 \|g_X(\bar{x}^*)\|^2
 \ge
-2\left(4L\mathscr{B}_{\bar{N}}+\frac{3\lambda\sigma^2}{T}\right)
+2\left(4L\mathcal{B}_{\bar{N}}+\frac{3\lambda\sigma^2}{T}\right)
 \right\}
-\le
+&\le
 \frac{S}{\lambda}+2^{-S}.
+\end{aligned}
 $$
 
 Lean:
@@ -315,17 +334,18 @@ Source target: Lan, FOML, Section 4.6, Algorithm 4.5, Theorem 4.12.
 ### Block Model
 
 $$
-f^*=\min_{x\in X}f(x),
-\qquad
-f(x)=\mathbb{E}[F(x,\xi)] .
+\begin{aligned}
+f^* &= \min_{x\in X}f(x),\\
+f(x)&=\mathbb{E}[F(x,\xi)] .
+\end{aligned}
 $$
 
 $$
-X=X_1\times X_2\times\cdots\times X_b\subseteq\mathbb{R}^{n},
-\qquad
-X_i\subseteq\mathbb{R}^{n_i},
-\qquad
-\sum_{i=1}^{b}n_i=n .
+\begin{aligned}
+X&=X_1\times X_2\times\cdots\times X_b\subseteq\mathbb{R}^{n},\\
+X_i&\subseteq\mathbb{R}^{n_i},\\
+\sum_{i=1}^{b}n_i&=n .
+\end{aligned}
 $$
 
 Lean:
@@ -339,9 +359,10 @@ Lean:
 The oracle assumptions are
 
 $$
-\mathbb{E}[G(x,\xi)]=g(x)\in\partial f(x),
-\qquad
-G_i(x,\xi)=U_i^TG(x,\xi).
+\begin{aligned}
+\mathbb{E}[G(x,\xi)]&=g(x)\in\partial f(x),\\
+G_i(x,\xi)&=U_i^TG(x,\xi).
+\end{aligned}
 $$
 
 $$
@@ -357,9 +378,11 @@ Lean:
 The block Bregman divergence is
 
 $$
+\begin{aligned}
 V_i(z,x)
-=
+&=
 v_i(x)-v_i(z)-\langle\nabla v_i(z),x-z\rangle .
+\end{aligned}
 $$
 
 Lean:
@@ -370,11 +393,11 @@ Lean:
 ### Sampling and One-Block Update
 
 $$
-\mathbb{P}\{i_k=i\}=p_i,
-\qquad
-p_i\in(0,1],
-\qquad
-\sum_{i=1}^{b}p_i=1 .
+\begin{aligned}
+\mathbb{P}\{i_k=i\}&=p_i,\\
+p_i&\in(0,1],\\
+\sum_{i=1}^{b}p_i&=1 .
+\end{aligned}
 $$
 
 Lean:
@@ -388,12 +411,12 @@ $$
 x_{k+1}^{(i)}
 =
 \begin{cases}
-\operatorname*{argmin}_{u\in X_i}
+\arg\min_{u\in X_i}
 \left\{
 \langle G_i(x_k,\xi_k),u\rangle
 +\gamma_k^{-1}V_i(x_k^{(i)},u)
 \right\},
-& i=i_k,\\[4pt]
+& i=i_k,\\
 x_k^{(i)}, & i\ne i_k .
 \end{cases}
 $$
@@ -436,14 +459,16 @@ Lean:
 Theorem 4.12:
 
 $$
+\begin{aligned}
 \mathbb{E}[f(\bar{x}_N)-f(x_*)]
-\le
+&\le
 \left(\sum_{k=1}^{N}\gamma_k\right)^{-1}
 \left[
 \sum_{i=1}^{b}p_i^{-1}V_i(x_1^{(i)},x_*^{(i)})
 +\frac{1}{2}\sum_{k=1}^{N}\gamma_k^2
 \sum_{i=1}^{b}M_i^2
 \right].
+\end{aligned}
 $$
 
 Lean:
