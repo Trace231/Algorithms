@@ -390,3 +390,90 @@ Lean objects:
 - `weighted_average_output_mem_measurable` supplies output feasibility and measurability.
 - `theorem_4_12_output_gap_integrable` proves the expectation is a genuine integral.
 - `theorem_4_12` is the final source theorem.
+
+## Stochastic Nonconvex Conditional Gradient
+
+File: [`StochasticNonconvexConditionalGradient.lean`](StochasticNonconvexConditionalGradient.lean)
+
+Source target: Lan, FOML, Section 7.4, Algorithms 7.12 and 7.13, Theorems 7.16 and 7.17.
+
+### Stochastic Model and Conditional-Gradient Geometry
+
+```math
+f(x)=\mathbb{E}[F(x,\xi)]
+```
+
+```math
+X\subseteq\mathbb{R}^{n}\quad\text{closed, compact, and convex}
+```
+
+Lean objects:
+- `StochasticNonconvexConditionalGradientSetup` stores the stochastic objective, oracle assumptions, feasible set, parameter schedules, and sample stream.
+- `FiniteSumNonconvexConditionalGradientSetup` is the finite-sum setup used for Theorem 7.16.
+- `linearMinimizer`, `wolfeGapMaximizer`, and `wolfeGap_spec` realize the conditional-gradient linear oracle and Wolfe-gap geometry.
+- `barDX`, `diameterPair`, and `barDX_bound` encode the feasible-set diameter budget.
+
+The Wolfe gap is:
+
+```math
+\operatorname{gap}(x)=\max_{y\in X}\langle\nabla f(x),x-y\rangle
+```
+
+Lean objects:
+- `SOptLib.ConditionalGradient.wolfeGap` is the library Wolfe-gap object.
+- `wolfeGap_eq_linearMinimizer` and `wolfeGap_surrogate_bound` connect the selected linear minimizer with the estimator-driven descent proof.
+
+### Variance-Reduced Estimator and Process
+
+Algorithm 7.13 uses epoch refreshes and recursive mini-batch updates:
+
+```math
+G_k=\frac{1}{m}\sum_{i=1}^{m}\nabla F(x_k,\xi_i)
+```
+
+```math
+G_k=G_{k-1}+\frac{1}{b}\sum_{i=1}^{b}\left(\nabla F(x_k,\xi_i)-\nabla F(x_{k-1},\xi_i)\right)
+```
+
+Lean objects:
+- `rawProcess`, `processOfWellDefined`, `rawIterProcess`, and `iterProcessOfWellDefined` define the stochastic recursion.
+- `deltaProcessOfWellDefined` is the estimator error `G_k - gradf x_k`.
+- `filtration`, `sampleBlockMeasurableSpace_mono`, and `sampleBlockMeasurableSpace_le` provide the adaptedness and sample-block measurability infrastructure.
+- `eq_7_4_2_conditional`, `lemma_7_4`, and `lemma_7_5_conditional` formalize the one-step descent, recursive estimator variance, and expected Wolfe-gap telescope.
+
+### Finite-Sum Theorem 7.16
+
+Algorithm 7.12 samples component indices using smoothness weights:
+
+```math
+q_i=\frac{L_i}{mL}
+```
+
+Lean objects:
+- `componentQ`, `componentIndexPMF`, and `sample_identDistrib_componentQ` encode the importance-sampling law.
+- `componentQ_weighted_gradDiff_sum_eq_gradf_sub` and `sampled_componentQ_gradDiff_residual_secondMoment_le` prove the finite-sum centering and second-moment bridge.
+- `activeEpochSteps`, `epochDifferenceAlphaIndex`, and `theorem716EpochDifferencePenalty` implement the active epoch partition and corrected generated-process penalty.
+
+Theorem 7.16 bounds the expected Wolfe gap:
+
+```math
+\mathbb{E}[\operatorname{gap}(x_R)]\le
+\frac{f(x_1)-f^{*}}{\sum_{k=1}^{N}\alpha_k}
++ \frac{L\bar{D}_X^2}{\sum_{k=1}^{N}\alpha_k}(\cdots)
++ \frac{N\sigma^2}{Lm\sum_{k=1}^{N}\alpha_k}
+```
+
+Lean objects:
+- `theorem_7_16_general_domainAware` is the domain-aware finite-sum theorem.
+- `theorem_7_16_general_epochDifference_domainAware` is the generated-process coordinate-corrected theorem.
+- `theorem_7_16_conditional` and `theorem_7_16_conditional_euclidean` expose the conditional and Euclidean-facing statements.
+
+### Theorem 7.17 and Corollary 7.12
+
+Theorem 7.17 and Corollary 7.12 specialize the nonconvex conditional-gradient rate with explicit parameter choices.
+
+Lean objects:
+- `theorem_7_17_general_with_wellDefined_l1_floor` and `theorem_7_17_general_domainAware_l1_floor` state the corrected rate with the unavoidable L1 floor.
+- `theorem_7_17_conditional_euclidean_l1_floor` is the Euclidean conditional form.
+- `corollary_7_12_general_with_wellDefined_l1_floor` and `corollary_7_12_conditional_euclidean_l1_floor` give the corollary-level specialization.
+- `corollary_7_12_printedClaimViolatedWithWellDefined_concreteWitness` records the scalar obstruction to the compressed printed claim.
