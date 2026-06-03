@@ -441,6 +441,16 @@ Lean objects:
 - `filtration`, `sampleBlockMeasurableSpace_mono`, and `sampleBlockMeasurableSpace_le` provide the adaptedness and sample-block measurability infrastructure.
 - `eq_7_4_2_conditional`, `lemma_7_4`, and `lemma_7_5_conditional` formalize the one-step descent, recursive estimator variance, and expected Wolfe-gap telescope.
 
+The randomized output law is:
+
+```math
+\Pr(R=k)=\frac{\alpha_k}{\sum_{j=1}^{N}\alpha_j}
+```
+
+Lean objects:
+- `alphaSumOfWellDefined`, `outputMassOfWellDefined`, and `outputPMFOfWellDefined` encode the normalized output law.
+- `randomOutputOfWellDefined`, `randomOutputWolfeGapOfWellDefined`, and `expectedWolfeGapOfWellDefined` encode the randomized output and its expected Wolfe gap.
+
 ### Finite-Sum Theorem 7.16
 
 Algorithm 7.12 samples component indices using smoothness weights:
@@ -457,10 +467,12 @@ Lean objects:
 Theorem 7.16 bounds the expected Wolfe gap:
 
 ```math
-\mathbb{E}[\operatorname{gap}(x_R)]\le
-\frac{f(x_1)-f^{*}}{\sum_{k=1}^{N}\alpha_k}
-+ \frac{L\bar{D}_X^2}{\sum_{k=1}^{N}\alpha_k}(\cdots)
-+ \frac{N\sigma^2}{Lm\sum_{k=1}^{N}\alpha_k}
+\begin{aligned}
+\mathbb{E}[\operatorname{gap}(x_R)]
+&\le \frac{f(x_1)-f^{*}}{\sum_{k=1}^{N}\alpha_k} \\
+&\quad + \frac{L\bar{D}_X^2}{\sum_{k=1}^{N}\alpha_k}(\cdots) \\
+&\quad + \frac{N\sigma^2}{Lm\sum_{k=1}^{N}\alpha_k}
+\end{aligned}
 ```
 
 Lean objects:
@@ -470,9 +482,43 @@ Lean objects:
 
 ### Theorem 7.17 and Corollary 7.12
 
-Theorem 7.17 and Corollary 7.12 specialize the nonconvex conditional-gradient rate with explicit parameter choices.
+Theorem 7.17 uses the Algorithm 7.13 parameter choice:
+
+```math
+\alpha_k=\alpha
+=\left(\frac{1/N+\sigma^2/(Lm)}{L\bar{D}_X^2}\right)^{1/2}
+```
+
+The corrected Theorem 7.17 statement keeps the explicit L1 floor from Lemma 7.5:
+
+```math
+\mathcal{A}_{N,S}
+=
+\frac{3}{2}\sum_{k=1}^{N}\alpha_k^2
++\sum_{s=0}^{S}\sum_{j=1}^{T}\alpha_{s,j}\max_{1\le r\le T}\alpha_{s,r}
+```
+
+```math
+\mathbb{E}[\operatorname{gap}(x_R)]\le
+\frac{f(x_1)-f^{*}}{\sum_{k=1}^{N}\alpha_k}
++ \frac{L\bar{D}_X^2\mathcal{A}_{N,S}}{\sum_{k=1}^{N}\alpha_k}
++ \frac{N\sigma^2}{2Lm\sum_{k=1}^{N}\alpha_k}
++ \frac{\bar{D}_X\sigma}{\sqrt{m}}
+```
+
+Equivalently, the aggregate term is:
+
+```math
+\left(
+\frac{3}{2}\sum_{k=1}^{N}\alpha_k^2
++\sum_{s=0}^{S}\sum_{j=1}^{T}\alpha_{s,j}\max_{1\le r\le T}\alpha_{s,r}
+\right)
+```
+
+Corollary 7.12 is recorded in the same corrected form: the formal corollary keeps the Theorem 7.17 right-hand side rather than compressing it to the printed coefficient-`4` display.
 
 Lean objects:
+- `paperAlphaOfWellDefined`, `αOfWellDefined`, and `alphaSumOfWellDefined` encode the displayed constant stepsize and normalizer.
 - `theorem_7_17_general_with_wellDefined_l1_floor` and `theorem_7_17_general_domainAware_l1_floor` state the corrected rate with the unavoidable L1 floor.
 - `theorem_7_17_conditional_euclidean_l1_floor` is the Euclidean conditional form.
 - `corollary_7_12_general_with_wellDefined_l1_floor` and `corollary_7_12_conditional_euclidean_l1_floor` give the corollary-level specialization.
