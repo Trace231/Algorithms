@@ -523,3 +523,14 @@ Lean objects:
 - `theorem_7_17_conditional_euclidean_l1_floor` is the Euclidean conditional form.
 - `corollary_7_12_general_with_wellDefined_l1_floor` and `corollary_7_12_conditional_euclidean_l1_floor` give the corollary-level specialization.
 - `corollary_7_12_printedClaimViolatedWithWellDefined_concreteWitness` records the scalar obstruction to the compressed printed claim.
+
+## AMSGrad
+
+File: [`AMSGrad.lean`](AMSGrad.lean)
+
+Source target: Reddi, Kale, and Kumar, ICLR 2018, Algorithm 2 and Theorem 4.
+
+This file records the object layer for AMSGrad. It defines the coordinate space,
+coordinatewise square and maximum, finite matrix metrics, checked quotient and
+square-root predicates, weighted projection relation, setup data, algorithm
+state, and source-facing run objects used by Algorithm 2 and Theorem 4.
